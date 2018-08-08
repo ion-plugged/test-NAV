@@ -1,0 +1,236 @@
+@import "../navsettings";
+@import "mixins";
+
+$fullscreen-color: #EEE;
+#navlets:fullscreen { background-color: $fullscreen-color; }
+#navlets:-webkit-full-screen { background-color: $fullscreen-color;}
+#navlets:-moz-full-screen { background-color: $fullscreen-color; }
+#navlets:-ms-fullscreen { background-color: $fullscreen-color; }
+
+.asteriskField { display: none; }
+
+#navlets .highlight {
+    background-color: #d6d6d6;
+    border: 1px solid #aaaaaa;
+    margin-bottom: 1em;
+}
+
+/* Is a column is empty, make sure it has some size to be visible */
+.navletColumn {
+    min-width: 20px;
+    min-height: 100px;
+}
+
+.navlet {
+    background-color: #ffffff;
+    border: 1px solid #DDDDDD;
+    margin-bottom: 1em;
+    padding: 0.5em 1em 1em 1.2em;
+    position: relative;
+    min-height: 100px;
+    transition: box-shadow .5s;
+    &.outline {
+        border: 1px dashed black;
+    }
+    &.mark-new {
+        box-shadow: #666 0px 5px 10px 7px;
+        z-index: 2;
+    }
+    &.colorblock-navlet {
+        background-color: #1570a6;
+        color: #fff;
+        .subheader {
+            color: #fff;
+        }
+        a {
+            color: #fff;
+        }
+    }
+    .navlet-header {
+        margin-bottom: 1em;
+        .navlet-drag-button i {
+            @include drag-cursor;
+        }
+        .deprecated-warning {
+            margin-bottom: auto;
+            margin-top: 1.25rem;
+        }
+    }
+    .navlet-body {
+        max-height: 90vh;
+        overflow: auto;
+    }
+    .navlet-action-group {
+        float: right;
+        i {
+            color: darkgrey;
+            margin-left: 0.5em;
+            &:hover {
+                color: black;
+            }
+        }
+    }
+    .subheader {
+        font-size: 1.1em;
+        position: relative;
+        i {
+            font-size: 0.8em;
+            margin-left: 0.3em;
+        }
+    }
+}
+
+.navlet .panel {
+    font-size: 0.9em;
+}
+
+
+/* Styling for individual navlets */
+
+.MessagesNavlet {
+    .panel {
+        .message-card-footer {
+            font-size: 0.8em;
+            color: #999;
+            overflow: hidden;
+            .message-card-publish {
+                float: left;
+            }
+            .message-card-tasks {
+                float: right;
+            }
+        }
+    }
+}
+
+.WatchDogWidget {
+    .watchdog-tests {
+        ul {
+            max-height: 200px;
+            overflow: auto;
+        }
+        li {
+            padding: 0.2em;
+            .label.alert {
+                cursor: pointer;
+            }
+            &:nth-child(odd) {
+                background-color: #F9F9F9;
+            }
+        }
+        .label {
+            line-height: 1.4em;
+            width: 60px;
+        }
+    }
+}
+
+.Status2Widget {
+    .status2-widget-footer {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+}
+
+
+.SensorWidget {
+    @import "sensors";
+    .room-sensor {
+        display: flex;
+        justify-content: center;
+        width: auto;
+    }
+}
+
+
+.UpsWidget {
+     .io-display {
+         position: relative;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         overflow: hidden;
+         .panel {
+             margin-bottom: 0;
+             padding: .4rem .6rem;
+             position: relative;
+             z-index: 2;
+             .marklow { background-color: lightcoral; }
+         }
+         .line {
+             background-color: steelblue;
+             color: white;
+         }
+         .left-wrapper {
+             display: flex;
+             flex-direction: column;
+             .vertical.line {
+                 height: 50px;
+                 display: flex;
+             }
+
+             .vertical.line .left-box {
+                 background-color: white;
+                 width: 50%;
+                 z-index: 2;
+             }
+             .vertical.line .middle-box {
+                 width: 1.2rem;
+                 z-index: 2;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+             }
+             .vertical.line .right-box {
+                 background-color: white;
+                 width: 50%;
+             }
+
+         }
+         .horizontal.line {
+             position: absolute;
+             line-height: 1.2rem;
+             width: 100%;
+             text-align: center;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+         }
+
+     }
+
+
+}
+
+.AlertWidget {
+    fieldset { padding: .3em .8em; }
+}
+
+.RoomStatus, .LocationStatus {
+    // Override the jquery ui css styles
+    .ui-accordion {
+        a { color: $primary-color; }
+        .ui-accordion-header {
+            background: $alert-box-bg;
+            border-color: $alert-box-border;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .label {
+                margin-bottom: 0;
+            }
+        }
+        .ui-accordion-content {
+            border-radius: 0;
+            padding: 1rem;
+            ul {
+                margin-bottom: 0;
+                li {
+                    font-size: 80%;
+                }
+            }
+        }
+    }
+}

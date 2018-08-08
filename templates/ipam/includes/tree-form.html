@@ -1,0 +1,32 @@
+<form id="prefix-tree-control" class="prefix-tree-control" onsubmit="return false;">
+
+  <h3>Search</h3>
+
+  <div>
+    <button class="submit-search btn small">Search</button>
+    <button class="submit-reset btn small">Reset</button>
+  </div>
+
+  <% if (state === "SIMPLE_SEARCH") { %>
+  <!-- free text search -->
+  <div class="prefix-tree-control-search">
+    <label>
+      Search (in organization ID or VLAN description)
+    </label>
+    <input autofocus
+      name="search"
+      id="prefix-tree-query"
+      class="search-param prefix-tree-query"
+      value="<%= queryParams.search %>">
+  </div>
+  <div>
+    <input type="hidden" class="search-param" id="prefix-net-type" name="net_type" value="scope">
+  </div>
+  <% } %>
+
+  {% include "ipam/includes/tree-form-advanced.html" %}
+  <div>
+    <button class="submit-search btn small">Search</button>
+    <button class="submit-reset btn small">Reset</button>
+  </div>
+</form>

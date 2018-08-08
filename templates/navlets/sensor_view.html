@@ -1,0 +1,26 @@
+{% extends 'navlets/base.html' %}
+{% load thresholds %}
+
+{% block navlet-content %}
+
+  {% if sensor %}
+
+    <div class="room-sensor"
+         data-url="{{ sensor.get_graph_url }}"
+         data-unit="{{ sensor.unit_of_measurement }}"
+         data-sensorid="{{ sensor.id }}"
+         data-sensorname="{{ sensor.human_readable }}"
+         data-thresholds="{{ sensor.get_metric_name|find_thresholds }}"
+         data-show-graph="{{ navlet.preferences.show_graph }}"
+         data-display-range="{{ sensor.get_display_range }}"
+         >
+    </div>
+
+  {% else %}
+    <span class="alert-box">
+      Sensor is missing. The sensor or the device in which it was located might
+      have been deleted.
+    </span>
+  {% endif %}
+
+{% endblock %}

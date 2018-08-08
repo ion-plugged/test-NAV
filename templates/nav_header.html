@@ -1,0 +1,19 @@
+{% comment %}
+  This template requires a tool available in the context
+{% endcomment %}
+
+{% if tool %}
+  <div class="nav-header">
+    <h2>{{ tool.name }}</h2>
+    <h5 class="subheader hide-for-small">
+      {% if tool.doclink %}
+        <a href="{{ tool.doclink }}"
+           title="View documentation (opens in another window)"
+           target="_blank">
+          <i class="fa fa-question-circle"></i>
+        </a>
+      {% endif %}
+      {{ tool.description }}
+    </h5>
+  </div>
+{% endif %}

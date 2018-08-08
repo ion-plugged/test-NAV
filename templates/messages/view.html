@@ -1,0 +1,99 @@
+{% extends "messages/base.html" %}
+
+{% block content %}
+
+  <p><a href="{% url 'messages-home' %}">See active messages</a></p>
+
+  <table class="vertitable">
+    <caption>{{ message.title }}</caption>
+
+    <tr>
+      <th>Published</th>
+      <td>{{ message.publish_start|date:"SHORT_DATETIME_FORMAT" }}</td>
+    </tr>
+
+    <tr>
+      <th>Author</th>
+      <td>{{ message.author }}</td>
+    </tr>
+
+    <tr>
+      <th>Description</th>
+      <td>{{ message.description }}</td>
+    </tr>
+
+    <tr>
+      <th>Technical description</th>
+      <td>{{ message.tech_description }}</td>
+    </tr>
+
+    {% if message.maintenance_tasks.all %}
+      <tr>
+        <th>Related maintenance tasks</th>
+        <td>
+          {% for task in message.maintenance_tasks.all %}
+            <li>
+              <a href="{% url 'maintenance-view' task.pk %}">
+                {{ task.description }}
+              </a>
+              ,
+              from {{ task.start_time|date:"SHORT_DATETIME_FORMAT" }}
+              to {{ task.end_time|date:"SHORT_DATETIME_FORMAT" }}
+              , current state is
+              <i>{{ task.state }}</i>
+            </li>
+          {% endfor %}
+        </td>
+      </tr>
+    {% endif %}
+
+    <tr>
+      <th>Expires</th>
+      <td>{{ message.publish_end|date:"SHORT_DATETIME_FORMAT" }}
+        {% if message.publish_end > now %}
+          <a href="{% url 'messages-expire' message.id %}"
+             class="button secondary tiny">Expire now</a>
+        {% endif %}
+      </td>
+    </tr>
+
+    {% if message.replaces_message %}
+      <tr>
+        <th>Replaces message</th>
+        <td>
+          <a href="{% url 'messages-view' message.replaces_message.id %}">
+            {{ message.replaces_message.title }},
+          </a>
+          from {{ message.replaces_message.publish_start|date:"SHORT_DATETIME_FORMAT" }},
+          by {{ message.replaces_message.author }}
+        </td>
+      </tr>
+    {% endif %}
+
+    {% for item in message.replaced_by.all %}
+      <tr>
+        <th>Replaced by</th>
+        <td>
+          <a href="{% url 'messages-view' item.id %}">
+            {{ item.title }},
+          </a>
+          from {{ item.publish_start|date:"SHORT_DATETIME_FORMAT" }},
+          by {{ item.author }}
+        </td>
+      </tr>
+    {% endfor %}
+
+  </table>
+
+  {% if not current_user_data.account.is_default_account %}
+    <a href="{% url 'messages-edit' message.id %}" class="button small">
+      Edit this message
+    </a>
+    <a href="{% url 'messages-followup' message.id %}" class="button small">
+      Follow up this message
+    </a>
+  {% endif %}
+
+
+
+{% endblock %}

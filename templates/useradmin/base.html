@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load tools %}
+
+{% block base_header_title %}NAV - User Administration{% endblock %}
+
+{% block base_header_additional_head %}
+  <style>
+   .long-listing {
+       border: 1px solid lightgray;
+       margin-bottom: 1em;
+       max-height: 250px;
+       overflow: auto;
+   }
+
+   .long-listing > table {
+       border: none;
+       margin-bottom: 0;
+   }
+   .action-list .button {
+       margin-bottom: 0;
+   }
+
+  </style>
+{% endblock %}
+
+{% block base_content %}
+
+  {% with tool=current_user_data.tools|get_tool:'User and API Administration' %}
+    {% include 'nav_header.html' %}
+  {% endwith %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert-box with-icon {% if message.tags %}{{ message.tags }}{% endif %}"">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}
+  {% endblock %}
+
+{% endblock %}

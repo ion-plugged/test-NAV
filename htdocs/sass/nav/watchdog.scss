@@ -1,0 +1,28 @@
+.watchdog-tests {
+    ul {
+        max-height: 300px;
+        overflow: auto;
+    }
+    li {
+        padding: 0.2em;
+        .label.alert {
+            cursor: pointer;
+        }
+        &:nth-child(odd) {
+            background-color: #F9F9F9;
+        }
+    }
+    .label {
+        line-height: 1.4em;
+        width: 60px;
+    }
+    .wd-test-description {
+        i {
+            color: gainsboro;
+            transition: color .5s;
+            &:hover {
+                color: black;
+            }
+        }
+    }
+}

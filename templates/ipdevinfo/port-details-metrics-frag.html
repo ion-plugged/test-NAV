@@ -1,0 +1,40 @@
+{% load thresholds %}
+
+{% with port_metrics|find_rules|dictsort:"suffix" as metrics %}
+  {% if metrics|length %}
+    <table class="listtable full-width nav-metrics-container">
+      <caption>Counters</caption>
+      <thead>
+      <tr>
+        <th>Metric</th>
+        <th><div class="right">Threshold</div></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for metric in metrics %}
+        <tr>
+          <td id="metric-graph-{{ forloop.counter }}" class="graph-toggler">
+            <i class="fa fa-chevron-right"></i>&nbsp;{{ metric.suffix }}
+          </td>
+          <td>
+            <div class="right">
+              {% include "threshold/frag-thresholdlist.html" %}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="graphitegraph hidden" colspan="3"
+              data-url="{{ metric.graphite_data_url }}"
+              data-handler-id="metric-graph-{{ forloop.counter }}">
+            <div class="rickshaw-container"></div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% elif graphite_error %}
+      <div data-alert class="alert-box alert">Unable to get a response from Graphite!</div>
+  {% else %}
+      <div data-alert class="alert-box secondary">No metrics for this interface</div>
+  {% endif %}
+{% endwith %}

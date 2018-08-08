@@ -1,0 +1,13 @@
+{% extends 'navlets/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block navlet-content %}
+
+  <form method="POST" action="{% url 'get-user-navlet' navlet.navlet_id %}">
+
+    {{ form|crispy }}
+
+    <input type="submit" value="Save changes" class="button small">
+  </form>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "useradmin/base.html" %}
+
+{% block content %}
+
+  <a href="{{ back }}" title="Go back to where you came from">Go back</a>
+  <div class="panel white">
+
+    <h4>{{ action|capfirst }}</h4>
+
+    <p>
+      Are you sure you want to {{ action }} {{ name }}?
+    </p>
+
+    <form action="" method="post">
+      {% if type and id %}
+        <input type="hidden" name="{{ type }}" value="{{ id }}"/>
+      {% endif %}
+      <input type="submit" value="Yes, {{ action }}" class="button small"/>
+      <a href="{{ back }}" class="button small secondary">No, do not {{ action }}</a>
+    </form>
+
+  </div>
+
+{% endblock %}

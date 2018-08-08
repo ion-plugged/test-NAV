@@ -1,0 +1,54 @@
+{% extends "portadmin/base.html" %}
+
+{% block content %}
+
+  {% if request.account.is_admin %}
+    <h4 class="latest-changes-heading" style="display: inline-block; cursor: pointer">
+      Latest changes <i class="fa fa-caret-square-o-right"></i>
+    </h4>
+    <div class="latest-changes-content row" style="display: none">
+      <div class="small-12 column">
+        {% include "auditlog/_logentry_list.html" %}
+      </div>
+    </div>
+    <script>
+     require(['libs/datatables.min'], function(){
+         $('.latest-changes-heading').click(function(){
+             $('.latest-changes-content').slideToggle();
+             $('.latest-changes-heading i').toggleClass('fa-caret-square-o-right fa-caret-square-o-down');
+         });
+     });
+    </script>
+  {% endif %}
+
+  {% if interfaces %}
+
+    <div class="row">
+
+      <div class="small-12 column">
+
+        {% include 'portadmin/portlist.html' %}
+      </div>
+
+{% comment %}
+      <div class="medium-4 column">
+
+        <div class="panel">
+          <p>
+            Available vlans
+            for {{ account.login }}@{{ netbox.get_short_sysname }}
+          </p>
+
+          <ul>
+            {% for vlan in allowed_vlans %}
+              <li>{{ vlan }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      </div>
+{% endcomment %}
+    </div>
+
+  {% endif %}
+{% endblock content %}

@@ -1,0 +1,108 @@
+{% load url from future %}
+{% load report %}
+
+<h3>Subnet matrix for {{ matrix.start_net.strCompressed }}</h3>
+
+<p class="panel">
+  Showing utilization for subnets with masklengths
+  {{ matrix.start_net.prefixlen }} to
+  {{ matrix.end_net.prefixlen }}
+</p>
+
+{% with matrix.start_net.strNormal as link %}
+  {% if show_unused %}
+    <a href="{% url 'report-matrix-scope' link %}" class="button small">
+      Hide unused address rows
+    </a>
+  {% else %}
+    {% if ipv4 %}
+      <a href="{% url 'report-matrix-scope-show_unused' link 'True' %}" class="button small">
+        Show unused address rows
+      </a>
+    {% endif %}
+  {% endif %}
+{% endwith %}
+
+<div id="subnet-matrix-feedback" class="alert-box warning with-icon hidden"></div>
+
+<table id="subnet-matrix"
+       data-family="{{ family }}"
+       data-scope="{{ scope }}"
+       class="full-width {% if ipv4 %}ipv4{% else %}ipv6{% endif %} ">
+  <thead>
+    <tr>
+      <th>
+        {{ matrix.start_net.prefixlen }} ... {{ sub }}
+      </th>
+
+      {% for heading in matrix.visible_column_headings %}
+        <th colspan="{{ matrix.heading_colspan }}">{{ heading }}</th>
+      {% endfor %}
+
+    </tr>
+  </thead>
+
+  {% for node in matrix.nodes %}
+    <tr>
+      <td>
+        {{ node.net.strCompressed }}
+      </td>
+      <td colspan="8">&nbsp;</td>
+    </tr>
+    {% for subnet in node.subnets %}
+      <tr>
+        {% for cell in subnet %}
+
+          {% if cell.is_empty %}
+            <td>&nbsp;</td>
+          {% else %}
+
+            {% if forloop.counter == 1 %}
+              {# First cell contains only the net address #}
+              <td>
+                {% if cell.link %}
+                  <a href="{{ cell.link.href }}" title="{{ cell.link.title }}">
+                    {{ cell.link.text }}
+                  </a>
+
+                {% else %}
+                  {{ cell.content }}
+                {% endif %}
+              </td>
+
+            {% else %}
+
+              <td colspan="{{ cell.colspan }}"
+                  rowspan="{{ cell.rowspan }}"
+                  {% if not cell.is_empty %} class="has-data" {% endif %}
+                  {% if cell.netaddr %}data-netaddr="{{ cell.netaddr }}"{% endif %}
+                  {% if cell.dataurl %}data-url="{{ cell.dataurl }}"{% endif %}
+              >
+                  <i class="fa fa-info-circle"></i>
+                  {# cell #}
+
+                {# Cells that are too small to have text #}
+                {% if cell.colspan in hide_for %}
+                  &nbsp;
+                {% else %}
+                  {% if cell.link %}
+                    <a href="{{ cell.link.href }}" title="{{ cell.link.title }}">
+                      {{ cell.link.text }}
+                    </a>
+                  {% else %}
+                    {{ cell.content }}
+                  {% endif %}
+                {% endif %}
+              </td>
+
+            {% endif %}
+          {% endif %}
+
+        {% empty %}
+          <td class="blank" colspan="{{ matrix.num_columns|add:"1" }}"></td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  {% endfor %}
+
+</table>

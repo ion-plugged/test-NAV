@@ -1,0 +1,47 @@
+{% load url from future %}
+
+<h3>Subnet Matrix</h3>
+
+{% if scopes %}
+
+
+  <p class="alert-box secondary">
+    Select scope you want to see the subnet matrix for.
+  </p>
+
+
+  {% if scopes.ipv4 %}
+    <h4>IPv4</h4>
+    {% with prefixes=scopes.ipv4 %}
+      {% include 'report/frag_matrix_report_link.html' %}
+    {% endwith %}
+  {% endif %}
+
+
+  {% if scopes.ipv6 %}
+    <h4>IPv6</h4>
+    {% with prefixes=scopes.ipv6 %}
+      {% include 'report/frag_matrix_report_link.html' %}
+    {% endwith %}
+  {% endif %}
+
+
+  {% if scopes.private %}
+    <h4>Private</h4>
+    {% with prefixes=scopes.private %}
+      {% include 'report/frag_matrix_report_link.html' %}
+    {% endwith %}
+  {% endif %}
+
+
+{% else %}
+
+
+  <p class="alert-box secondary">
+    The NAV-database does not contain any network scopes.
+    <a href="{% url 'seeddb-prefix-edit' %}">Seed the database</a>
+    and return here to see the subnet matrix.
+  </p>
+
+
+{% endif %}

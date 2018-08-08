@@ -1,0 +1,64 @@
+/* Styles for / */
+
+#index-leftcontent {
+    float: left;
+    width: 600px;
+}
+
+@media screen and (max-width: 900px) {
+
+    #index-leftcontent {
+        width: 100%;
+    }
+
+    div.boxes {
+        display: table;
+        width: 100%;
+    }
+
+    div.boxes table {
+        display: table-cell;
+        width: auto;
+        border-right: 1px solid white;
+    }
+
+    div.boxes table:last-child {
+        border: none;
+    }
+
+    div.boxes table th {
+        white-space: nowrap;
+    }
+
+}
+
+/* Smartphone landscape */
+@media only screen
+and (max-width : 480px) {
+    div.boxes {
+        display: none;
+    }
+}
+
+
+/* Dashboard and widget stuff */
+
+.right-action-content.f-dropdown {
+    border: 7px solid #243640;
+    box-shadow: #666 0 5px 10px;
+    z-index: 1000;
+    form {
+        margin-bottom: 1em;
+    }
+    input, select, .button {
+        margin-bottom: 0;
+    }
+    .dashboard-title { cursor: pointer; }
+    .dashboard-title i { display: none; }
+    .dashboard-title:hover i { display: inline-block; }
+}
+
+#form-rename-dashboard {
+    label { overflow: hidden; }
+    input[type=text] { width: 100%; }
+}

@@ -1,0 +1,122 @@
+// Override alert mixins
+// -------------------------------------------
+
+// Override mixin to handle new parameters for font color and border
+@mixin alert-style($bg:$info-box-bg, $color:$info-box-color, $border:$info-box-border) {
+    position: relative;
+	background-color: $bg;
+	color: $color;
+	border-color: $border;
+	font-weight:400;
+    line-height: 1.5em;
+}
+
+// Override this mixin to default to secondary colors on alert-box
+@mixin alert($radius:false) {
+    @include alert-base;
+    @include alert-style();
+    @include radius($radius);
+}
+
+@mixin alert-icon($icon) {
+    &.with-icon:before {
+        content: $icon;
+        font-family: FontAwesome;
+        font-size: 1.5em;
+        margin-right: 0.5em;
+        vertical-align: middle;
+    }
+}
+
+small.errorField {
+    @include form-error-message;
+}
+
+// Main configuration for alert-box class
+.alert-box {
+    @include alert;
+
+    a {
+        color: #014265;  // Add darker link color for higher contrast.
+        text-decoration: underline;  // Make links visible in alert-boxes
+    }
+
+    .close { @include alert-close; }
+
+    &.radius { @include radius($alert-radius); }
+    &.round { @include radius($global-rounded); }
+
+    &.success {
+        @include alert-style($success-box-bg, $success-box-color, $success-box-border);
+        @include alert-icon("\f058");
+    }
+    &.alert {
+        @include alert-style($alert-box-bg, $alert-box-color, $alert-box-border);
+        @include alert-icon("\f057");
+    }
+    &.error {
+        @include alert-style($alert-box-bg, $alert-box-color, $alert-box-border);
+        @include alert-icon("\f057");
+    }
+    &.secondary { @include alert-style($info-box-bg, $info-box-color, $info-box-border); }
+    &.info {
+        @include alert-style($info-box-bg, $info-box-color, $info-box-border);
+        @include alert-icon("\f05a");
+    }
+    &.warning {
+        @include alert-style($warning-box-bg, $warning-box-color, $warning-box-border);
+        @include alert-icon("\f071");
+    }
+
+    &.inside-table {
+        display: inline-block;
+        padding-top: rem-calc(4);
+        padding-bottom: rem-calc(4);
+        margin-bottom: 0;
+    }
+
+}
+
+
+// Adds class for marking a button as active.
+button, .button {
+    &.active {
+        background-color: scale-color($primary-color, $lightness: $button-function-factor);
+        &.secondary { background-color: scale-color($secondary-color, $lightness: $button-function-factor); }
+        &.alert { background-color: scale-color($alert-color, $lightness: $button-function-factor); }
+        &.success { background-color: scale-color($success-color, $lightness: $button-function-factor); }
+    }
+}
+
+// Add a custom button for use inside table rows
+@mixin table-button-base($color: $primary-color) {
+    @include button(
+        $padding: rem-calc(3),
+        $bg: $color
+    );
+    font-size: rem-calc(11);
+    margin-bottom: 0;
+}
+
+// Include styles for all subclasses of the button
+.table-button {
+    @include table-button-base;
+    &.secondary {@include table-button-base($secondary-color);}
+    &.success {@include table-button-base($success-color);}
+    &.alert {@include table-button-base($alert-color);}
+    &.warning {@include table-button-base($warning-color);}
+    &.info {@include table-button-base($info-color);}
+}
+
+
+// Add a white version of the panel
+.panel.white {
+    background-color: white;
+}
+
+// Override navbars default height because it casus display problems on medium screens
+@media #{$medium-up} {
+    .top-bar {
+        height: auto;
+    }
+}

@@ -1,0 +1,131 @@
+{% load string_manipulation %}
+<div class="report-table-wrapper">
+
+  <table class="listtable full-width">
+
+    <caption>
+
+      {% if paginate %}
+
+        {# Pagination list #}
+        <ul class="pagination right">
+          <li>
+            Page size:
+            <form id="reportPageSize" style="display: inline-block">
+              <label>
+                <select name="page_size" style="padding: 0 0.5em; height: auto">
+                  {% for page_size in page_sizes %}
+                    <option value="{{ page_size }}"
+                            {% if page_size == page.paginator.per_page %}selected{% endif %}>
+                      {{ page_size }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </label>
+            </form>
+          </li>
+
+          <li>
+            <small>Page {{ page.number }} of {{ page.paginator.num_pages }}</small>
+          </li>
+
+          <li>
+            <a href="?page_number=1&{{ query_string }}">First</a>
+          </li>
+
+          {% if page.has_previous %}
+            <li class="arrow">
+              <a href="?page_number={{ page.previous_page_number }}&{{ query_string }}">&laquo;</a>
+            </li>
+          {% else %}
+            <li class="arrow unavailable"><a>&laquo;</a></li>
+          {% endif %}
+
+
+          {% for page_number in current_page_range  %}
+            <li {% if page_number == page.number %}class="current"{% endif %}>
+              <a href="?page_number={{ page_number }}&{{ query_string }}">{{ page_number }}</a>
+            </li>
+          {% endfor %}
+
+
+          {% if page.has_next %}
+            <li class="arrow">
+              <a href="?page_number={{ page.next_page_number }}&{{ query_string }}">&raquo;</a>
+            </li>
+          {% else %}
+            <li class="arrow unavailable"><a>&raquo;</a></li>
+          {% endif %}
+
+          <li>
+            <a href="?page_number={{ page.paginator.page_range|last }}&{{ query_string }}">Last</a>
+          </li>
+
+        </ul>
+      {% endif %}
+
+      {{ report.title }}
+
+      {% if paginate %}
+        <small>({{ page.start_index }} - {{ page.end_index }} of {{ page.paginator.count }})</small>
+      {% endif %}
+
+    </caption>
+
+    {% if report.table.header.cells %}
+      <thead>
+        <tr>
+          {% for cell in report.table.header.cells %}
+            <th>
+              {% if cell.uri and add_sort_links %}
+                <a class="navbar" href="{{ cell.uri }}"
+                   title="{{ cell.explanation }}">{{ cell.text }}</a>
+              {% else %}
+                <span class="navbar" title="{{ cell.explanation }}">{{ cell.text }}</span>
+              {% endif %}
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+    {% endif %}
+
+    <tfoot>
+      {% if report.table.footer.cells %}
+        <tr class="tablesum">
+          {% for cell in report.table.footer.cells %}
+            <th>{{ cell.sum }}</th>
+          {% endfor %}
+        </tr>
+      {% endif %}
+    </tfoot>
+
+    <tbody>
+      {% if page %}
+
+        {% for row in page %}
+          <tr>
+
+            {% for cell in row.cells %}
+              <td>
+
+                {% if cell.uri %}
+                  <a href="{{ cell.uri }}">{{ cell.text|default:"" }}</a>
+                {% else %}
+                  {{ cell.text|deep_urlize|default:""|safe }}
+                {% endif %}
+
+              </td>
+            {% endfor %}
+
+          </tr>
+        {% endfor %}
+
+      {% else %}
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+</div>
